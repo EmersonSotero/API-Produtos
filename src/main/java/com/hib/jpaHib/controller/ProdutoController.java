@@ -45,6 +45,10 @@ public class ProdutoController {
 	public ResponseEntity<ProdutoDTO> getProdutoById(@PathVariable Long id){
 		ProdutoDTO ob = mapper.map(serviceRepository.findById(id), ProdutoDTO.class);
 		System.out.println(ob.getNome());
+		/*
+		 * teste
+		 * 
+		 * */
 		return ResponseEntity.status(HttpStatus.OK).body(ob);
 	}
 	
