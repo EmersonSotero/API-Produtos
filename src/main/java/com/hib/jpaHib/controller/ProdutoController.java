@@ -1,5 +1,6 @@
 package com.hib.jpaHib.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.hib.jpaHib.entity.Produto;
 import com.hib.jpaHib.entity.dto.ProdutoDTO;
@@ -44,18 +46,14 @@ public class ProdutoController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ProdutoDTO> getProdutoById(@PathVariable Long id){
 		ProdutoDTO ob = mapper.map(serviceRepository.findById(id), ProdutoDTO.class);
-		System.out.println(ob.getNome());
-		/*
-		 * teste
-		 * 
-		 * */
 		return ResponseEntity.status(HttpStatus.OK).body(ob);
 	}
 	
 	
 	@PostMapping
-	public void setProduto(@RequestBody Produto produto){
-		pr.save(produto);
+	public ResponseEntity<ProdutoDTO> setProduto(@RequestBody ProdutoDTO produto){
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(serviceRepository.create(produto).getId()).toUri();
+		return ResponseEntity.created(uri).body(null);
 	}
 	
 	@DeleteMapping("/{id}")
